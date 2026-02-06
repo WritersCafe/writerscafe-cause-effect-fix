@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>@WritersCafe208 — Cause & Effect (Q9) Fix-It Lab</title>
+  <style>
+    :root{
+      --bg:#0f1115; --panel:#161a22; --panel2:#1d2330; --text:#e9edf6;
+      --muted:#aab3c5; --accent:#ff5aa5; --accent2:#55d6c2; --warn:#ffcc66;
+      --ok:#7CFF9B; --bad:#ff6b6b; --line:#2a3242;
+    }
+    body{margin:0;background:linear-gradient(135deg,#0f1115,#121826);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;}
+    header{padding:18px 18px 10px; border-bottom:1px solid var(--line);}
+    .brand{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+    .pill b{letter-spacing:.2px}
+    .wrap{max-width:1100px;margin:0 auto;padding:16px;}
+    .tabs{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 16px;}
+    .tabbtn{cursor:pointer;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--text);
+      padding:10px 12px;border-radius:12px;font-weight:650}
+    .tabbtn[aria-selected="true"]{outline:2px solid rgba(255,90,165,.55);background:rgba(255,90,165,.12)}
+    .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:14px}
+    @media (max-width: 900px){.grid{grid-template-columns:1fr}}
+    .card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:14px}
+    h2,h3{margin:6px 0 10px}
+    p{margin:8px 0;color:var(--muted);line-height:1.45}
+    .qbox{background:linear-gradient(135deg,rgba(255,90,165,.18),rgba(85,214,194,.10));border:1px solid rgba(255,255,255,.10)}
+    .choices{display:grid;gap:10px;margin-top:10px}
+    .choice{padding:10px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.10);background:rgba(0,0,0,.15)}
+    .choice strong{color:var(--text)}
+    .mini{font-size:13px;color:var(--muted)}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .btn{cursor:pointer;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:var(--text);
+      padding:10px 12px;border-radius:14px;font-weight:700}
+    .btn.primary{background:rgba(85,214,194,.14);border-color:rgba(85,214,194,.40)}
+    .btn.pink{background:rgba(255,90,165,.14);border-color:rgba(255,90,165,.40)}
+    .btn:disabled{opacity:.55;cursor:not-allowed}
+    .tag{display:inline-block;padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.10);background:rgba(0,0,0,.18);font-weight:650}
+    .tag.ok{border-color:rgba(124,255,155,.35);background:rgba(124,255,155,.12);color:var(--ok)}
+    .tag.bad{border-color:rgba(255,107,107,.35);background:rgba(255,107,107,.12);color:var(--bad)}
+    .tag.warn{border-color:rgba(255,204,102,.35);background:rgba(255,204,102,.10);color:var(--warn)}
+    textarea{width:100%;min-height:92px;background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.12);
+      border-radius:14px;color:var(--text);padding:10px 12px;resize:vertical}
+    .sentlist{display:grid;gap:10px}
+    .sentence{cursor:pointer;user-select:none;padding:10px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.10);background:rgba(0,0,0,.14)}
+    .sentence[aria-pressed="true"]{outline:2px solid rgba(255,90,165,.55);background:rgba(255,90,165,.12)}
+    .dropzone{min-height:48px;padding:10px;border-radius:14px;border:1px dashed rgba(255,255,255,.18);background:rgba(0,0,0,.12)}
+    .cardstack{display:grid;gap:10px}
+    .draggable{cursor:grab;padding:10px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.10);background:rgba(0,0,0,.16)}
+    .hint{font-size:13px;color:var(--muted)}
+    .divider{height:1px;background:var(--line);margin:12px 0}
+    .hidden{display:none}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <span class="pill">☕ <b>@WritersCafe208</b> <span class="mini">Fix-It Lab (Q9)</span></span>
+      <span class="pill">🎯 Goal: <b>Don’t redo the hunt.</b> Figure out <b>why</b> you missed it.</span>
+      <span class="pill">⏱️ Target time: <b>10–15 minutes</b></span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="tabs" role="tablist" aria-label="Activities">
+      <button class="tabbtn" role="tab" aria-selected="true" aria-controls="tab1" id="t1">Activity 1 — Rationale Match</button>
+      <button class="tabbtn" role="tab" aria-selected="false" aria-controls="tab2" id="t2">Activity 2 — Click Cause → Effect → Topic</button>
+    </div>
+
+    <!-- TAB 1 -->
+    <section id="tab1" role="tabpanel" aria-labelledby="t1">
+      <div class="grid">
+        <div class="card qbox">
+          <h2>Benchmark Question (Q9)</h2>
+          <p><b>How does the use of a cause-and-effect structure in paragraphs 2 and 3</b> help support the topic of the article?</p>
+          <div class="choices">
+            <div class="choice"><strong>A</strong> It shows that the people of the city have a deep appreciation for their culture and history.</div>
+            <div class="choice"><strong>B</strong> It demonstrates why people from the community were willing to share their stories.</div>
+            <div class="choice"><strong>C</strong> It emphasizes the importance of the materials used by the artist to build the sculpture.</div>
+            <div class="choice"><strong>D</strong> It explains why the artist was inspired to create the sculpture in the way that she did. <span class="tag ok">Correct</span></div>
+          </div>
+          <div class="divider"></div>
+          <p class="hint">Task: Match each answer choice to the best “why students pick it / why it’s wrong or right” rationale card.</p>
+        </div>
+
+        <div class="card">
+          <h3>Rationale Cards</h3>
+          <p class="hint">Drag a card into A, B, C, or D. (On touchpads, click-and-drag works best.)</p>
+
+          <div class="cardstack" id="rationaleDeck"></div>
+
+          <div class="divider"></div>
+          <h3>Drop Zones</h3>
+
+          <div class="row"><span class="tag">A</span><div class="dropzone" data-slot="A"></div></div>
+          <div class="row" style="margin-top:10px"><span class="tag">B</span><div class="dropzone" data-slot="B"></div></div>
+          <div class="row" style="margin-top:10px"><span class="tag">C</span><div class="dropzone" data-slot="C"></div></div>
+          <div class="row" style="margin-top:10px"><span class="tag">D</span><div class="dropzone" data-slot="D"></div></div>
+
+          <div class="divider"></div>
+          <div class="row">
+            <button class="btn primary" id="checkRationales">Check Matches</button>
+            <button class="btn" id="resetRationales">Reset</button>
+            <span id="rationaleStatus" class="tag warn">Not checked yet</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2 -->
+    <section id="tab2" role="tabpanel" aria-labelledby="t2" class="hidden">
+      <div class="grid">
+        <div class="card">
+          <h2>Click-to-Build: Cause → Effect → Topic</h2>
+          <p class="hint">
+            Click a sentence that works as a <b>CAUSE</b>. Then click a sentence that works as an <b>EFFECT</b>.
+            Do this twice (Box 1 and Box 2). Then combine both boxes into one final answer.
+          </p>
+
+          <div class="divider"></div>
+          <h3>Sentence Bank (from the idea of paragraphs 2–3)</h3>
+          <p class="hint">These are short “idea-sentences” so we can practice the thinking loop fast.</p>
+
+          <div class="sentlist" id="sentenceBank"></div>
+
+          <div class="divider"></div>
+          <div class="row">
+            <span class="tag pink">Pick Mode:</span>
+            <button class="btn pink" id="modeCause">CAUSE</button>
+            <button class="btn" id="modeEffect">EFFECT</button>
+            <button class="btn" id="clearPicks">Clear Picks</button>
+            <span class="tag warn" id="pickHint">Pick a CAUSE first.</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Box 1</h3>
+          <div class="mini">Cause:</div>
+          <div class="choice" id="b1cause">—</div>
+          <div class="mini" style="margin-top:8px">Effect:</div>
+          <div class="choice" id="b1effect">—</div>
+          <div class="mini" style="margin-top:8px">Explain (use a stem):</div>
+          <textarea id="b1explain" placeholder="Stem idea: Because __________, the result is __________. This supports the topic because __________."></textarea>
+
+          <div class="divider"></div>
+
+          <h3>Box 2</h3>
+          <div class="mini">Cause:</div>
+          <div class="choice" id="b2cause">—</div>
+          <div class="mini" style="margin-top:8px">Effect:</div>
+          <div class="choice" id="b2effect">—</div>
+          <div class="mini" style="margin-top:8px">Explain (use a stem):</div>
+          <textarea id="b2explain" placeholder="Stem idea: The author uses cause/effect to show __________ leads to __________, which connects to the topic by __________."></textarea>
+
+          <div class="divider"></div>
+
+          <h3>Final: One statement that answers Q9</h3>
+          <textarea id="finalAnswer" placeholder="The cause-and-effect structure supports the topic by showing that __________, which led the artist to __________."></textarea>
+
+          <div class="divider"></div>
+
+          <div class="row">
+            <button class="btn primary" id="selfCheck">Self-Check vs Correct Answer</button>
+            <button class="btn" id="resetAll">Reset Activity</button>
+          </div>
+          <p id="selfCheckNote" class="hint"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+<script>
+  // ---------------- Tabs ----------------
+  const tabs = [
+    {btn: document.getElementById('t1'), panel: document.getElementById('tab1')},
+    {btn: document.getElementById('t2'), panel: document.getElementById('tab2')},
+  ];
+  tabs.forEach((t, idx) => {
+    t.btn.addEventListener('click', () => {
+      tabs.forEach((x, i) => {
+        x.btn.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+        x.panel.classList.toggle('hidden', i !== idx);
+      });
+    });
+  });
+
+  // ---------------- Activity 1: Rationale Match ----------------
+  const rationaleCards = [
+    {id:'rA', text:'Tempting because it sounds true and “big,” but it doesn’t explain what cause→effect does in paragraphs 2–3.', slot:'A'},
+    {id:'rB', text:'Tempting because it mentions “stories,” but the question is about how structure supports the topic—focus should be the artist’s inspiration.', slot:'B'},
+    {id:'rC', text:'Tempting because materials are concrete, but cause/effect in paragraphs 2–3 is about reasons/inspiration, not building supplies.', slot:'C'},
+    {id:'rD', text:'Correct because cause→effect can show what the artist saw/learned and how that led her to create the sculpture in a specific way.', slot:'D'},
+  ];
+
+  const deck = document.getElementById('rationaleDeck');
+  function makeCard(card){
+    const d = document.createElement('div');
+    d.className = 'draggable';
+    d.draggable = true;
+    d.id = card.id;
+    d.textContent = card.text;
+    d.dataset.correctSlot = card.slot;
+    d.addEventListener('dragstart', (e)=> {
+      e.dataTransfer.setData('text/plain', d.id);
+    });
+    return d;
+  }
+
+  function resetRationaleDeck(){
+    deck.innerHTML = '';
+    rationaleCards.forEach(c => deck.appendChild(makeCard(c)));
+    document.querySelectorAll('.dropzone').forEach(z => z.innerHTML = '');
+    statusPill('rationaleStatus','Not checked yet','warn');
+  }
+
+  function statusPill(id, text, kind){
+    const el = document.getElementById(id);
+    el.textContent = text;
+    el.classList.remove('ok','bad','warn');
+    el.classList.add(kind);
+  }
+
+  document.querySelectorAll('.dropzone').forEach(zone => {
+    zone.addEventListener('dragover', e => e.preventDefault());
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      const id = e.dataTransfer.getData('text/plain');
+      const card = document.getElementById(id);
+      if(!card) return;
+      // Only one card per zone; move existing back to deck
+      if(zone.firstElementChild) deck.appendChild(zone.firstElementChild);
+      zone.appendChild(card);
+    });
+  });
+
+  document.getElementById('checkRationales').addEventListener('click', () => {
+    let correct = 0;
+    document.querySelectorAll('.dropzone').forEach(zone => {
+      const slot = zone.dataset.slot;
+      const card = zone.firstElementChild;
+      if(card && card.dataset.correctSlot === slot) correct++;
+    });
+    if(correct === 4) statusPill('rationaleStatus','Perfect match — you diagnosed the traps.','ok');
+    else statusPill('rationaleStatus',`${correct}/4 correct — fix the mismatches.`, 'warn');
+  });
+
+  document.getElementById('resetRationales').addEventListener('click', resetRationaleDeck);
+  resetRationaleDeck();
+
+  // ---------------- Activity 2: Click Cause → Effect → Topic ----------------
+  const sentenceBank = [
+    "The artist saw difficult conditions some people faced in Mexico.",
+    "The artist wanted to create art reflecting love and respect for Hispanic communities.",
+    "She wanted to celebrate San Antonio’s history from the point of view of the people who lived there.",
+    "She led public chats so ordinary people could share family histories and cultures.",
+    "Those stories were collected and shaped into designs that represented many cultures and lifestyles.",
+    "The finished sculptures were installed as a monumental work meant to include many voices."
+  ];
+
+  const bankEl = document.getElementById('sentenceBank');
+  let pickMode = 'CAUSE'; // or EFFECT
+  let boxIndex = 1; // fill box1 then box2
+  let b1 = {cause:null, effect:null};
+  let b2 = {cause:null, effect:null};
+
+  function renderBank(){
+    bankEl.innerHTML = '';
+    sentenceBank.forEach((s, i) => {
+      const div = document.createElement('div');
+      div.className = 'sentence';
+      div.textContent = s;
+      div.dataset.idx = i;
+      div.setAttribute('aria-pressed','false');
+      div.addEventListener('click', () => onPick(div));
+      bankEl.appendChild(div);
+    });
+  }
+
+  function setPickHint(text, kind='warn'){
+    const el = document.getElementById('pickHint');
+    el.textContent = text;
+    el.classList.remove('ok','bad','warn');
+    el.classList.add(kind);
+  }
+
+  function onPick(div){
+    const text = div.textContent;
+
+    if(boxIndex === 1){
+      if(pickMode === 'CAUSE'){
+        b1.cause = text;
+        document.getElementById('b1cause').textContent = text;
+        pickMode = 'EFFECT';
+        document.getElementById('modeCause').classList.remove('pink');
+        document.getElementById('modeEffect').classList.add('pink');
+        setPickHint('Now pick an EFFECT for Box 1.');
+      } else {
+        b1.effect = text;
+        document.getElementById('b1effect').textContent = text;
+        boxIndex = 2;
+        pickMode = 'CAUSE';
+        document.getElementById('modeEffect').classList.remove('pink');
+        document.getElementById('modeCause').classList.add('pink');
+        setPickHint('Box 1 complete. Pick a CAUSE for Box 2.', 'ok');
+      }
+      return;
+    }
+
+    if(boxIndex === 2){
+      if(pickMode === 'CAUSE'){
+        b2.cause = text;
+        document.getElementById('b2cause').textContent = text;
+        pickMode = 'EFFECT';
+        document.getElementById('modeCause').classList.remove('pink');
+        document.getElementById('modeEffect').classList.add('pink');
+        setPickHint('Now pick an EFFECT for Box 2.');
+      } else {
+        b2.effect = text;
+        document.getElementById('b2effect').textContent = text;
+        pickMode = 'CAUSE';
+        document.getElementById('modeEffect').classList.remove('pink');
+        document.getElementById('modeCause').classList.add('pink');
+        setPickHint('Both boxes have picks. Now write explanations + final answer.', 'ok');
+      }
+    }
+  }
+
+  document.getElementById('modeCause').addEventListener('click', () => {
+    pickMode = 'CAUSE';
+    document.getElementById('modeCause').classList.add('pink');
+    document.getElementById('modeEffect').classList.remove('pink');
+    setPickHint('Pick a CAUSE.');
+  });
+
+  document.getElementById('modeEffect').addEventListener('click', () => {
+    pickMode = 'EFFECT';
+    document.getElementById('modeEffect').classList.add('pink');
+    document.getElementById('modeCause').classList.remove('pink');
+    setPickHint('Pick an EFFECT.');
+  });
+
+  document.getElementById('clearPicks').addEventListener('click', () => {
+    boxIndex = 1; pickMode='CAUSE';
+    b1={cause:null,effect:null}; b2={cause:null,effect:null};
+    document.getElementById('b1cause').textContent='—';
+    document.getElementById('b1effect').textContent='—';
+    document.getElementById('b2cause').textContent='—';
+    document.getElementById('b2effect').textContent='—';
+    setPickHint('Pick a CAUSE first.');
+  });
+
+  document.getElementById('selfCheck').addEventListener('click', () => {
+    const note = document.getElementById('selfCheckNote');
+    const final = (document.getElementById('finalAnswer').value || '').toLowerCase();
+
+    // simple heuristic: look for “why” + “inspired”/“led her” language
+    const looksAligned = final.includes('why') || final.includes('inspir') || final.includes('led') || final.includes('because');
+
+    if(looksAligned){
+      note.innerHTML = "✅ Your answer is pointing the right direction if it explains <b>WHY the artist was inspired</b> and shows a <b>cause → effect</b> chain that supports the topic.";
+    } else {
+      note.innerHTML = "⚠️ If your answer only sounds ‘generally true’ (culture/history/materials), it may be drifting. Re-center on: <b>cause → effect → why the artist created it this way</b>.";
+    }
+  });
+
+  document.getElementById('resetAll').addEventListener('click', () => {
+    document.getElementById('b1explain').value='';
+    document.getElementById('b2explain').value='';
+    document.getElementById('finalAnswer').value='';
+    document.getElementById('selfCheckNote').textContent='';
+    document.getElementById('clearPicks').click();
+  });
+
+  // init
+  renderBank();
+  document.getElementById('modeCause').classList.add('pink');
+</script>
+</body>
+</html>
