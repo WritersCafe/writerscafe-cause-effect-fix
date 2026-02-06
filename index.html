@@ -20,6 +20,13 @@
       --line:#e6d6c8;
       --shadow: 0 12px 30px rgba(58,43,35,.10);
       --radius:18px;
+
+      --good:#1f8f4a;       /* café green */
+      --goodBg: rgba(31,143,74,.12);
+      --bad:#d14949;        /* warm red */
+      --badBg: rgba(209,73,73,.10);
+      --badOutline: rgba(209,73,73,.55);
+      --goodOutline: rgba(31,143,74,.55);
     }
 
     *{box-sizing:border-box}
@@ -45,9 +52,7 @@
     }
 
     .wrap{max-width:1200px;margin:0 auto}
-    .brand{
-      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
-    }
+    .brand{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
     .pill{
       display:inline-flex; gap:8px; align-items:center;
       padding:10px 12px; border-radius:999px;
@@ -136,16 +141,12 @@
       font-weight:750;
     }
     .draggable:active{cursor:grabbing}
-
-    .choiceCard{
-      border:1px solid var(--line);
-      border-radius: 14px;
-      background: rgba(217,244,239,.22);
-      padding:10px 12px;
+    .draggable.selected{
+      outline: 3px solid rgba(255,79,163,.40);
+      background: rgba(247,214,230,.40);
     }
-    .choiceCard b{color:var(--mocha)}
-    .choiceCard .mini{font-size:13px;color:rgba(43,36,32,.70);font-weight:650}
 
+    /* Rationale card + slot */
     .rationaleCard{
       border:1px solid var(--line);
       border-radius: 16px;
@@ -153,9 +154,10 @@
       background: linear-gradient(180deg, rgba(247,214,230,.50), rgba(217,244,239,.25));
     }
     .rationaleCard h4{margin:0 0 8px;color:var(--mocha)}
+
     .slot{
       margin-top:10px;
-      min-height:48px;
+      min-height:52px;
       border-radius:14px;
       border:2px dashed rgba(58,43,35,.18);
       background: rgba(255,255,255,.65);
@@ -163,10 +165,29 @@
       display:flex;
       align-items:center;
       gap:10px;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
     }
     .slot .placeholder{
       color:rgba(43,36,32,.55);
       font-weight:700;
+    }
+
+    /* Correct / Incorrect states for Activity 1 */
+    .slot.correct{
+      border: 2px solid var(--goodOutline);
+      background: var(--goodBg);
+    }
+    .slot.incorrect{
+      border: 2px solid var(--badOutline);
+      background: var(--badBg);
+      animation: wiggle .35s ease-in-out 0s 3;
+    }
+    @keyframes wiggle{
+      0%{transform:translateX(0)}
+      25%{transform:translateX(-3px)}
+      50%{transform:translateX(3px)}
+      75%{transform:translateX(-2px)}
+      100%{transform:translateX(0)}
     }
 
     /* Activity 2 layout */
@@ -189,7 +210,6 @@
     }
     .badge.cause{color:var(--pink)}
     .badge.effect{color:var(--teal)}
-
     .bankList{display:grid;gap:10px}
 
     .stepPanel{
@@ -204,6 +224,7 @@
     }
     .step h4{margin:0 0 6px;color:var(--mocha)}
     .step .directions{color:rgba(43,36,32,.75);font-weight:650}
+
     .dropRow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
     @media (max-width: 980px){.dropRow{grid-template-columns:1fr}}
     .dropBox{
@@ -239,16 +260,39 @@
       background: rgba(217,244,239,.35);
     }
 
+    /* NEW: Scaffold mini-steps */
+    .scaffold{
+      margin-top:10px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px 12px;
+      background: rgba(242,230,216,.30);
+    }
+    .scaffold ol{
+      margin:6px 0 0 18px;
+      padding:0;
+      color:rgba(43,36,32,.78);
+      font-weight:700;
+    }
+    .scaffold li{margin:6px 0}
+    .keyWord{color:var(--mocha); font-weight:900}
+    .lockRow{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:10px}
+
     textarea{
       width:100%;
-      min-height:90px;
+      min-height:92px;
       border-radius:16px;
       border:1px solid var(--line);
       padding:10px 12px;
       font-size:15px;
       background: rgba(255,255,255,.92);
-      color:var(--ink);
+      color: var(--good);       /* NEW: green student typing */
+      font-weight:800;
       resize:vertical;
+    }
+    textarea:read-only{
+      background: rgba(217,244,239,.35);
+      border-color: rgba(47,183,163,.35);
     }
 
     .hidden{display:none}
@@ -278,8 +322,10 @@
         <p><b>How does the use of a cause-and-effect structure in paragraphs 2–3</b> help support the topic of the article?</p>
 
         <div class="divider"></div>
-        <h3>Answer Choices (Drag these)</h3>
-        <p class="muted">Drag each choice into the rationale card that best explains it.</p>
+        <h3>Answer Choices (Drag OR Click-to-Move)</h3>
+        <p class="muted">
+          Drag each choice into a rationale slot. Or: <b>click an answer</b> to pick it up, then <b>click a slot</b> to drop it.
+        </p>
 
         <div id="answerDeck" class="bankList"></div>
 
@@ -331,7 +377,7 @@
         <!-- Box 1 -->
         <div class="step">
           <h4>Box 1</h4>
-          <div class="directions">1) Drag a <b>CAUSE</b> into the cause box. 2) Drag an <b>EFFECT</b> into the effect box. 3) Explain how this cause/effect helps clarify the topic of <b>community artwork</b>.</div>
+          <div class="directions">1) Drag a <b>CAUSE</b>. 2) Drag an <b>EFFECT</b>. 3) Explain how this cause/effect helps clarify the topic of <b>community artwork</b>.</div>
 
           <div class="dropRow">
             <div>
@@ -344,11 +390,27 @@
             </div>
           </div>
 
-          <div class="stemBlock">
-            <div><b>Sentence stem (use this to write):</b></div>
-            <div>Because <u>__________</u>, the result is <u>__________</u>. This supports the topic of community artwork because <u>__________</u>.</div>
+          <div class="scaffold">
+            <b>Quick scaffold (what your sentence should do):</b>
+            <ol>
+              <li>Say the <span class="keyWord">CAUSE</span> (why).</li>
+              <li>Say the <span class="keyWord">EFFECT</span> (what happened).</li>
+              <li>Say how this connects to the <span class="keyWord">TOPIC</span>: community artwork.</li>
+            </ol>
           </div>
 
+          <div class="stemBlock">
+            <div><b>Sentence stem:</b></div>
+            <div>
+              Because <u>__________</u>, the result is <u>__________</u>.
+              This supports the topic of community artwork because <u>__________</u>.
+            </div>
+          </div>
+
+          <div class="lockRow">
+            <button class="btn pink" data-lock="b1Explain" id="lockB1">🔒 Lock Box 1</button>
+            <span class="muted">Lock it if you’re done and want to protect your work.</span>
+          </div>
           <textarea id="b1Explain" aria-label="Box 1 explanation"></textarea>
         </div>
 
@@ -368,11 +430,27 @@
             </div>
           </div>
 
-          <div class="stemBlock teal">
-            <div><b>Sentence stem (use this to write):</b></div>
-            <div>Another cause is <u>__________</u>, which led to <u>__________</u>. This reinforces the topic of community artwork by showing <u>__________</u>.</div>
+          <div class="scaffold">
+            <b>Quick scaffold (keep it simple):</b>
+            <ol>
+              <li>Start with “Another cause is…”</li>
+              <li>Then “which led to…”</li>
+              <li>Finish with how it supports the topic.</li>
+            </ol>
           </div>
 
+          <div class="stemBlock teal">
+            <div><b>Sentence stem:</b></div>
+            <div>
+              Another cause is <u>__________</u>, which led to <u>__________</u>.
+              This reinforces the topic of community artwork by showing <u>__________</u>.
+            </div>
+          </div>
+
+          <div class="lockRow">
+            <button class="btn pink" data-lock="b2Explain" id="lockB2">🔒 Lock Box 2</button>
+            <span class="muted">Lock it when you’re done.</span>
+          </div>
           <textarea id="b2Explain" aria-label="Box 2 explanation"></textarea>
         </div>
 
@@ -381,11 +459,27 @@
           <h4>Final: One statement that answers Q9</h4>
           <div class="directions"><b>Combine Box 1 + Box 2</b> into one strong statement:</div>
 
-          <div class="stemBlock">
-            <div><b>Sentence stem (final answer):</b></div>
-            <div>The author’s use of cause-and-effect structure supports the topic of community artwork by showing that <u>__________</u>, which led to <u>__________</u>.</div>
+          <div class="scaffold">
+            <b>Final sentence goal:</b>
+            <ol>
+              <li>Mention the author’s <span class="keyWord">cause-and-effect structure</span>.</li>
+              <li>Explain how it shows <span class="keyWord">why the artist created the work this way</span>.</li>
+              <li>Connect to the <span class="keyWord">topic</span> (community artwork).</li>
+            </ol>
           </div>
 
+          <div class="stemBlock">
+            <div><b>Sentence stem (final answer):</b></div>
+            <div>
+              The author’s use of cause-and-effect structure supports the topic of community artwork by showing that
+              <u>__________</u>, which led to <u>__________</u>.
+            </div>
+          </div>
+
+          <div class="lockRow">
+            <button class="btn pink" data-lock="finalAnswer" id="lockFinal">🔒 Lock Final Answer</button>
+            <span class="muted">Lock it when you’re satisfied.</span>
+          </div>
           <textarea id="finalAnswer" aria-label="Final synthesis answer"></textarea>
 
           <div class="divider"></div>
@@ -425,7 +519,7 @@ function setStatus(id, text, ok=false){
   el.classList.add(ok ? 'ok' : 'warn');
 }
 
-/* ===================== Activity 1 — Drag answers into rationale cards ===================== */
+/* ===================== Activity 1 — Click-to-move + check colors + wiggle ===================== */
 const answers = [
   {id:'A', text:'It shows that the people of the city have a deep appreciation for their culture and history.'},
   {id:'B', text:'It demonstrates why people from the community were willing to share their stories.'},
@@ -433,36 +527,30 @@ const answers = [
   {id:'D', text:'It explains why the artist was inspired to create the sculpture in the way that she did.'},
 ];
 
-// Each card wants exactly one answer id.
 const rationaleCardsData = [
-  {
-    id:'card1',
-    title:'“True-sounding, but NOT what this question asks.”',
+  { id:'card1', title:'“True-sounding, but NOT what this question asks.”',
     rationale:'This answer may sound true about the article, but it does not explain how the cause-and-effect structure in paragraphs 2–3 supports the topic.',
-    correct:'A'
-  },
-  {
-    id:'card2',
-    title:'“Wrong focus.”',
-    rationale:'This answer focuses on the community’s reasons (their motivation) instead of the artist’s inspiration and design choices, which is what the structure explains here.',
-    correct:'B'
-  },
-  {
-    id:'card3',
-    title:'“Detail distraction.”',
+    correct:'A' },
+  { id:'card2', title:'“Wrong focus.”',
+    rationale:'This answer focuses on the community’s reasons instead of the artist’s inspiration and design choices, which is what the structure explains here.',
+    correct:'B' },
+  { id:'card3', title:'“Detail distraction.”',
     rationale:'This answer shifts attention to materials. Paragraphs 2–3 use cause/effect to explain reasons and inspiration, not construction supplies.',
-    correct:'C'
-  },
-  {
-    id:'card4',
-    title:'✅ “Matches structure + topic.”',
+    correct:'C' },
+  { id:'card4', title:'✅ “Matches structure + topic.”',
     rationale:'Correct: the cause-and-effect structure explains what the artist saw/understood and how that led her to create the sculpture in a specific way.',
-    correct:'D'
-  },
+    correct:'D' },
 ];
 
 const answerDeck = document.getElementById('answerDeck');
 const rationaleCards = document.getElementById('rationaleCards');
+
+let selectedChipId = null;
+
+function clearSelectedChip(){
+  document.querySelectorAll('.draggable.selected').forEach(x => x.classList.remove('selected'));
+  selectedChipId = null;
+}
 
 function makeAnswerChip(a){
   const d = document.createElement('div');
@@ -471,9 +559,23 @@ function makeAnswerChip(a){
   d.id = 'ans_' + a.id;
   d.dataset.answerId = a.id;
   d.innerHTML = `<b>${a.id}.</b> ${a.text}`;
+
+  // Drag support
   d.addEventListener('dragstart', (e)=> {
     e.dataTransfer.setData('text/plain', d.id);
   });
+
+  // Click-to-pick-up support
+  d.addEventListener('click', () => {
+    if(selectedChipId === d.id){
+      clearSelectedChip();
+      return;
+    }
+    clearSelectedChip();
+    selectedChipId = d.id;
+    d.classList.add('selected');
+  });
+
   return d;
 }
 
@@ -484,33 +586,52 @@ function makeRationaleCard(c){
     <h4>${c.title}</h4>
     <div class="muted">${c.rationale}</div>
     <div class="slot" data-correct="${c.correct}">
-      <span class="placeholder">Drop the matching answer choice here</span>
+      <span class="placeholder">Drop (or click-to-move) the matching answer choice here</span>
     </div>
   `;
+
   const slot = wrap.querySelector('.slot');
 
+  // Allow drag drop
   slot.addEventListener('dragover', e => e.preventDefault());
   slot.addEventListener('drop', e => {
     e.preventDefault();
     const id = e.dataTransfer.getData('text/plain');
     const chip = document.getElementById(id);
     if(!chip) return;
+    placeChipInSlot(chip, slot);
+  });
 
-    // keep only 1 chip per slot; send existing back to deck
-    const existing = slot.querySelector('.draggable');
-    if(existing) answerDeck.appendChild(existing);
-
-    // remove placeholder if present
-    const ph = slot.querySelector('.placeholder');
-    if(ph) ph.remove();
-
-    slot.appendChild(chip);
+  // Allow click-to-place: if a chip is selected, clicking the slot drops it here
+  slot.addEventListener('click', () => {
+    if(!selectedChipId) return;
+    const chip = document.getElementById(selectedChipId);
+    if(!chip) return;
+    placeChipInSlot(chip, slot);
+    clearSelectedChip();
   });
 
   return wrap;
 }
 
+function placeChipInSlot(chip, slot){
+  // Keep only one chip per slot; return existing to deck
+  const existing = slot.querySelector('.draggable');
+  if(existing) answerDeck.appendChild(existing);
+
+  // Remove placeholder
+  const ph = slot.querySelector('.placeholder');
+  if(ph) ph.remove();
+
+  slot.appendChild(chip);
+
+  // Clear any previous correctness visuals (student will re-check)
+  slot.classList.remove('correct','incorrect');
+  setStatus('statusTab1', 'Placed. Now click Check Matches.', false);
+}
+
 function resetTab1(){
+  clearSelectedChip();
   answerDeck.innerHTML = '';
   rationaleCards.innerHTML = '';
   answers.forEach(a => answerDeck.appendChild(makeAnswerChip(a)));
@@ -519,25 +640,38 @@ function resetTab1(){
 }
 
 document.getElementById('checkTab1').addEventListener('click', () => {
+  clearSelectedChip();
   const slots = rationaleCards.querySelectorAll('.slot');
   let correctCount = 0;
+
+  // clear old states
+  slots.forEach(s => s.classList.remove('correct','incorrect'));
+
   slots.forEach(s => {
     const chip = s.querySelector('.draggable');
     const correct = s.dataset.correct;
-    if(chip && chip.dataset.answerId === correct) correctCount++;
+
+    if(chip && chip.dataset.answerId === correct){
+      s.classList.add('correct');
+      correctCount++;
+    } else {
+      // Mark incorrect (wiggle + red) ONLY if something is placed or it was attempted
+      // If empty, still mark incorrect so they notice it needs a match
+      s.classList.add('incorrect');
+    }
   });
+
   if(correctCount === slots.length){
-    setStatus('statusTab1', 'Perfect — you matched every rationale.', true);
+    setStatus('statusTab1', 'Perfect — everything is correct ✅', true);
   } else {
-    setStatus('statusTab1', `${correctCount}/${slots.length} correct — adjust the mismatches.`, false);
+    setStatus('statusTab1', `${correctCount}/${slots.length} correct — move the red wiggling one(s) and check again.`, false);
   }
 });
 
 document.getElementById('resetTab1').addEventListener('click', resetTab1);
 resetTab1();
 
-/* ===================== Activity 2 — Cause bank + Effect bank ===================== */
-/* Note: These are “idea strips” (fast practice). You can swap them later with exact sentences if you want. */
+/* ===================== Activity 2 — Cause/effect banks + lock buttons + green text ===================== */
 const causes = [
   {id:'c1', text:'The artist noticed difficult conditions affecting some Hispanic communities.'},
   {id:'c2', text:'She wanted to create public art that reflects love and respect for the people.'},
@@ -585,7 +719,6 @@ function setDropBox(boxEl, expectedType){
     // Only one strip per drop box
     const existing = boxEl.querySelector('.draggable');
     if(existing){
-      // send it back to the correct bank
       (existing.dataset.type === 'cause' ? causeBank : effectBank).appendChild(existing);
     }
 
@@ -603,13 +736,11 @@ setDropBox(document.getElementById('b2Cause'), 'cause');
 setDropBox(document.getElementById('b2Effect'), 'effect');
 
 function resetTab2(){
-  // clear banks
   causeBank.innerHTML = '';
   effectBank.innerHTML = '';
   causes.forEach(c => causeBank.appendChild(makeStrip(c,'cause')));
   effects.forEach(e => effectBank.appendChild(makeStrip(e,'effect')));
 
-  // clear drop boxes + restore placeholders
   const drops = [
     {id:'b1Cause', label:'Drop CAUSE'},
     {id:'b1Effect', label:'Drop EFFECT'},
@@ -618,38 +749,68 @@ function resetTab2(){
   ];
   drops.forEach(d => {
     const el = document.getElementById(d.id);
-    // Move any strip currently inside back to its bank
     const strip = el.querySelector('.draggable');
     if(strip) (strip.dataset.type === 'cause' ? causeBank : effectBank).appendChild(strip);
     el.innerHTML = `<span class="placeholder">${d.label}</span>`;
   });
 
+  document.getElementById('b1Explain').readOnly = false;
+  document.getElementById('b2Explain').readOnly = false;
+  document.getElementById('finalAnswer').readOnly = false;
+
   document.getElementById('b1Explain').value = '';
   document.getElementById('b2Explain').value = '';
   document.getElementById('finalAnswer').value = '';
   document.getElementById('selfNote').textContent = '';
+
+  document.getElementById('lockB1').textContent = '🔒 Lock Box 1';
+  document.getElementById('lockB2').textContent = '🔒 Lock Box 2';
+  document.getElementById('lockFinal').textContent = '🔒 Lock Final Answer';
+
   setStatus('statusTab2', 'Not checked yet', false);
 }
 
 document.getElementById('resetTab2').addEventListener('click', resetTab2);
 resetTab2();
 
+/* Lock buttons */
+function toggleLock(textareaId, btnId){
+  const ta = document.getElementById(textareaId);
+  const btn = document.getElementById(btnId);
+  ta.readOnly = !ta.readOnly;
+  btn.textContent = ta.readOnly ? '🔓 Unlock (edit)' : btn.textContent.replace('🔓 Unlock (edit)','🔒 Lock');
+  if(!ta.readOnly) btn.textContent = btn.textContent.includes('Lock') ? btn.textContent : '🔒 Lock';
+}
+document.getElementById('lockB1').addEventListener('click', () => {
+  const ta = document.getElementById('b1Explain');
+  ta.readOnly = !ta.readOnly;
+  document.getElementById('lockB1').textContent = ta.readOnly ? '🔓 Unlock Box 1 (edit)' : '🔒 Lock Box 1';
+});
+document.getElementById('lockB2').addEventListener('click', () => {
+  const ta = document.getElementById('b2Explain');
+  ta.readOnly = !ta.readOnly;
+  document.getElementById('lockB2').textContent = ta.readOnly ? '🔓 Unlock Box 2 (edit)' : '🔒 Lock Box 2';
+});
+document.getElementById('lockFinal').addEventListener('click', () => {
+  const ta = document.getElementById('finalAnswer');
+  ta.readOnly = !ta.readOnly;
+  document.getElementById('lockFinal').textContent = ta.readOnly ? '🔓 Unlock Final (edit)' : '🔒 Lock Final Answer';
+});
+
 document.getElementById('selfCheck').addEventListener('click', () => {
   const final = (document.getElementById('finalAnswer').value || '').toLowerCase();
   const note = document.getElementById('selfNote');
 
-  // Heuristic: student should reference WHY + artist + created/design/structure
-  const hasWhy = final.includes('why') || final.includes('because') || final.includes('so');
+  const hasWhy = final.includes('why') || final.includes('because') || final.includes('led') || final.includes('so');
   const hasArtist = final.includes('artist');
-  const hasSupport = final.includes('support') || final.includes('helps') || final.includes('clarif');
   const hasTopic = final.includes('community') || final.includes('artwork') || final.includes('public art');
 
   if(hasWhy && hasArtist && hasTopic){
-    setStatus('statusTab2', 'Looks aligned — your answer connects cause→effect to the artist’s inspiration.', true);
-    note.textContent = "✅ Check: does your sentence explain how cause-and-effect shows WHY the artist created the work this way (not materials, not just culture)?";
+    setStatus('statusTab2', 'Looks aligned — you connected WHY → what happened → topic ✅', true);
+    note.textContent = "✅ Quick check: Your sentence should show WHY the artist created it this way (not materials; not just culture).";
   } else {
-    setStatus('statusTab2', 'Almost — re-center on WHY the artist created it this way.', false);
-    note.textContent = "⚠️ Add the missing piece: mention WHY (cause) → what happened (effect) → how that supports the topic of community artwork.";
+    setStatus('statusTab2', 'Almost — add WHY + artist + topic.', false);
+    note.textContent = "⚠️ Add missing pieces: (1) WHY (cause), (2) what happened (effect), (3) how that supports the topic of community artwork.";
   }
 });
 </script>
